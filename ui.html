@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link
+    rel="stylesheet"
+    as="style"
+    onload="this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+  />
+
+  <title>Design System AI</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+    }
+    .layout-container {
+      height: 100%;
+      overflow-y: auto;
+    }
+    
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #3100B5;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 2px 8px;
+      margin-left: 8px;
+      letter-spacing: 0.03em;
+      vertical-align: middle;
+      animation: pulse 1.2s infinite alternate;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #3100B5;
+      border-top: 2px solid #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .chart-bar {
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: bottom;
+    }
+    
+    .chart-bar-horizontal {
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: left;
+    }
+    
+    .data-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .data-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(49, 0, 181, 0.3);
+      border-color: #3100B5;
+    }
+    
+    .token-color { background: linear-gradient(135deg, #EF4444, #DC2626); }
+    .token-spacing { background: linear-gradient(135deg, #10B981, #059669); }
+    .token-typography { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .token-iconography { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+    .token-elevation { background: linear-gradient(135deg, #06B6D4, #0891B2); }
+    .token-radius { background: linear-gradient(135deg, #EC4899, #DB2777); }
+  </style>
+</head>
+<body>
+  <div class="relative flex size-full min-h-screen flex-col bg-[#1a1a1a] dark group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+    <div class="layout-container flex h-full grow flex-col">
+      <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#363636] px-10 py-3 sticky top-0 z-50 bg-[#1a1a1a]">
+        <div class="flex items-center gap-4 text-white">
+          <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Design System AI</h2>
+        </div>
+        <div class="flex flex-1 justify-end gap-8">
+          <div class="flex items-center gap-9">
+            <a class="text-white text-sm font-medium leading-normal hover:text-[#3100B5] transition-colors" href="#overview-section">Overview</a>
+            <a class="text-white text-sm font-medium leading-normal hover:text-[#3100B5] transition-colors" href="#tokens-section">Tokens</a>
+            <a class="text-white text-sm font-medium leading-normal hover:text-[#3100B5] transition-colors" href="#components-section">Components</a>
+          </div>
+        </div>
+      </header>
+      
+      <div class="px-40 flex flex-1 justify-center py-5">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+          <!-- Selection Status -->
+          <div id="selection-status" class="flex items-center justify-between p-4 mb-4 rounded-xl border border-[#4d4d4d] bg-[#2a2a2a]">
+            <div class="flex items-center gap-3">
+              <div class="w-3 h-3 rounded-full bg-gray-500" id="status-indicator"></div>
+              <span class="text-white text-sm font-medium" id="status-text">Select a frame to analyze</span>
+            </div>
+            <div class="text-[#adadad] text-xs" id="frame-info"></div>
+          </div>
+
+          <!-- Overview Section -->
+          <div class="flex flex-wrap justify-between gap-3 p-4" id="overview-section">
+            <div class="flex min-w-72 flex-col gap-3">
+              <p class="text-white tracking-light text-[32px] font-bold leading-tight">Overview</p>
+              <p class="text-[#adadad] text-sm font-normal leading-normal">Analyze your design system and library data with AI</p>
+            </div>
+          </div>
+          
+          <!-- Design System Section -->
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 flex items-center" id="design-system-section">
+            Design System
+            <span class="live-badge" id="live-badge-ds">Live</span>
+            <span class="spinner" id="spinner-ds" style="display:none;"></span>
+          </h2>
+          
+          <div class="flex flex-wrap gap-4 p-4" id="ds-summary-section">
+            <div class="data-card flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#4d4d4d]">
+              <p class="text-white text-base font-medium leading-normal">Tokens</p>
+              <p class="text-white tracking-light text-2xl font-bold leading-tight" id="ds-tokens">0</p>
+            </div>
+            <div class="data-card flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#4d4d4d]">
+              <p class="text-white text-base font-medium leading-normal">Components</p>
+              <p class="text-white tracking-light text-2xl font-bold leading-tight" id="ds-components">0</p>
+            </div>
+            <div class="data-card flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#4d4d4d]">
+              <p class="text-white text-base font-medium leading-normal">Automation</p>
+              <p class="text-white tracking-light text-2xl font-bold leading-tight" id="ds-automation">0%</p>
+            </div>
+          </div>
+          
+          <!-- Token Usage Section -->
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 flex items-center" id="tokens-section">
+            Token Usage
+            <span class="live-badge" id="live-badge-tokens">Live</span>
+            <span class="spinner" id="spinner-tokens" style="display:none;"></span>
+          </h2>
+          
+          <div class="flex flex-wrap gap-4 px-4 py-6">
+            <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-xl border border-[#4d4d4d] p-6">
+              <div class="flex items-center justify-between mb-4">
+                <p class="text-white text-base font-medium leading-normal">Token Usage</p>
+                <div class="text-[#adadad] text-xs" id="total-tokens-count">Total: 0 tokens</div>
+              </div>
+              <div class="chart-container">
+                <div class="grid min-h-[180px] grid-flow-col gap-6 grid-rows-[1fr_auto] items-end justify-items-center px-3" id="token-chart">
+                  <div class="chart-bar token-color border-t-2 w-full" style="height: 10%;" data-value="0"></div>
+                  <p class="text-[#adadad] text-[13px] font-bold leading-normal tracking-[0.015em]">Color</p>
+                  <div class="chart-bar token-spacing border-t-2 w-full" style="height: 10%;" data-value="0"></div>
+                  <p class="text-[#adadad] text-[13px] font-bold leading-normal tracking-[0.015em]">Spacing</p>
+                  <div class="chart-bar token-typography border-t-2 w-full" style="height: 10%;" data-value="0"></div>
+                  <p class="text-[#adadad] text-[13px] font-bold leading-normal tracking-[0.015em]">Typography</p>
+                  <div class="chart-bar token-iconography border-t-2 w-full" style="height: 10%;" data-value="0"></div>
+                  <p class="text-[#adadad] text-[13px] font-bold leading-normal tracking-[0.015em]">Iconography</p>
+                  <div class="chart-bar token-elevation border-t-2 w-full" style="height: 10%;" data-value="0"></div>
+                  <p class="text-[#adadad] text-[13px] font-bold leading-normal tracking-[0.015em]">Elevation</p>
+                  <div class="chart-bar token-radius border-t-2 w-full" style="height: 10%;" data-value="0"></div>
+                  <p class="text-[#adadad] text-[13px] font-bold leading-normal tracking-[0.015em]">Border Radius</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component Usage Section -->
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 flex items-center" id="components-section">
+            Component Usage
+            <span class="live-badge" id="live-badge-components">Live</span>
+            <span class="spinner" id="spinner-components" style="display:none;"></span>
+          </h2>
+          
+          <div class="flex flex-wrap gap-4 px-4 py-6">
+            <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-xl border border-[#4d4d4d] p-6">
+              <div class="flex items-center justify-between mb-4">
+                <p class="text-white text-base font-medium leading-normal">Component Usage</p>
+                <div class="text-[#adadad] text-xs" id="total-components-count">Total: 0 components</div>
+              </div>
+              <div class="grid min-h-[180px] gap-x-4 gap-y-6 grid-cols-[auto_1fr] items-center py-3" id="component-chart">
+                <!-- Component chart will be rendered here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Export Buttons -->
+          <div class="flex flex-col gap-3 p-4">
+            <button id="saveTokensCsv" class="flex max-w-[960px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 bg-[#3100B5] text-white text-base font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 hover:bg-[#4338CA] transition-colors">
+              Export Design Tokens CSV
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CSV Modal -->
+    <div id="csv-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-[999]">
+      <div class="bg-[#2a2a2a] rounded-xl shadow-lg p-6 w-full max-w-2xl flex flex-col gap-4">
+        <h3 class="text-white text-lg font-bold">Export Design Tokens</h3>
+        <p class="text-[#adadad] text-sm">Review the token data below or download it as a CSV file.</p>
+        <textarea id="csv-data-textarea" class="w-full h-64 bg-[#1a1a1a] text-white border border-[#4d4d4d] rounded-lg p-2 font-mono text-xs resize-y"></textarea>
+        <div class="flex justify-end gap-3">
+          <button id="close-csv-modal" class="px-4 py-2 bg-[#4d4d4d] text-white rounded-lg hover:bg-[#5e5e5e] transition-colors">Close</button>
+          <button id="download-csv-button" class="px-4 py-2 bg-[#3100B5] text-white rounded-lg hover:bg-[#4338CA] transition-colors">Download CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Enhanced message handler with better debugging
+      window.addEventListener('message', (event) => {
+        console.log('=== MESSAGE RECEIVED ===');
+        console.log('Event:', event);
+        console.log('Event data:', event.data);
+        
+        // Check if this is a message from our plugin
+        if (event.data && event.data.pluginMessage && event.data.pluginId === '1518864076543910996') {
+          console.log('=== PLUGIN MESSAGE PROCESSING ===');
+          console.log('Full pluginMessage:', event.data.pluginMessage);
+          console.log('pluginMessage keys:', Object.keys(event.data.pluginMessage));
+          console.log('pluginMessage type:', typeof event.data.pluginMessage);
+          console.log('pluginMessage stringified:', JSON.stringify(event.data.pluginMessage, null, 2));
+          
+          const pluginMessage = event.data.pluginMessage;
+          console.log('pluginMessage object:', pluginMessage);
+          console.log('All pluginMessage properties:', Object.getOwnPropertyNames(pluginMessage));
+          
+          // Handle nested pluginMessage structure
+          const actualMessage = pluginMessage.pluginMessage || pluginMessage;
+          console.log('Actual message:', actualMessage);
+          
+          // Try different ways to extract the data
+          const type = actualMessage.type || actualMessage.messageType || actualMessage.action;
+          const data = actualMessage.data || actualMessage.payload || actualMessage;
+          
+          console.log('Extracted type:', type);
+          console.log('Extracted data:', data);
+          console.log('Data type:', typeof data);
+          console.log('Data keys:', data ? Object.keys(data) : 'data is null/undefined');
+          
+          if (type === 'CSV_REPORT_DATA') {
+            console.log('CSV data received, creating download link.');
+            
+            // Handle different possible data structures
+            let csvContent;
+            if (data && data.content) {
+              csvContent = data.content;
+            } else if (typeof data === 'string') {
+              csvContent = data;
+            } else if (pluginMessage.content) {
+              csvContent = pluginMessage.content;
+            } else {
+              console.error('No CSV content found in message');
+              console.log('Available data:', data);
+              console.log('Available pluginMessage:', pluginMessage);
+              return;
+            }
+            
+            console.log('CSV content length:', csvContent.length);
+            console.log('CSV content preview:', csvContent.substring(0, 200));
+            
+            try {
+              const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+              const link = document.createElement("a");
+              const url = URL.createObjectURL(blob);
+              link.setAttribute("href", url);
+              link.setAttribute("download", "design-tokens.csv");
+              link.style.visibility = 'hidden';
+              document.body.appendChild(link);
+              console.log('Download link created, triggering click...');
+              link.click();
+              document.body.removeChild(link);
+              console.log('CSV download completed');
+            } catch (error) {
+              console.error('Error creating CSV download:', error);
+            }
+            
+            // Prevent further processing
+            event.stopImmediatePropagation();
+            return;
+          } else if (type === 'ANALYZE_SELECTION_RESULTS') {
+            console.log('Analysis results received:', data);
+            setLiveLoading(false);
+            const { frameInfo, ds, tokenChart, componentUsageData } = data;
+            const componentChart = componentUsageData;
+            
+            // Update status bar
+            document.getElementById('status-indicator').style.background = '#10B981';
+            document.getElementById('status-text').textContent = `Frame "${frameInfo.name}" is selected`;
+            document.getElementById('frame-info').textContent = `${Math.round(frameInfo.width)}x${Math.round(frameInfo.height)}`;
+            
+            // Update DS summary cards
+            document.getElementById('ds-tokens').textContent = ds.tokens;
+            document.getElementById('ds-components').textContent = ds.components;
+            document.getElementById('ds-automation').textContent = `${ds.automation}%`;
+            
+            // Update Token Chart
+            document.getElementById('total-tokens-count').textContent = `Total: ${tokenChart.total} tokens`;
+            const tokenChartContainer = document.getElementById('token-chart');
+            const tokenBars = tokenChartContainer.querySelectorAll('.chart-bar');
+            
+            let maxTokenValue = Math.max(...tokenChart.values);
+            if (maxTokenValue === 0) maxTokenValue = 1;
+
+            tokenBars.forEach((bar, index) => {
+                const value = tokenChart.values[index] || 0;
+                const heightPercentage = Math.round((value / maxTokenValue) * 100);
+                bar.style.height = `${Math.max(heightPercentage, 5)}%`;
+                bar.setAttribute('data-value', value);
+            });
+
+            // Update Component Chart
+            document.getElementById('total-components-count').textContent = `Total: ${componentChart.total} components`;
+            const componentChartContainer = document.getElementById('component-chart');
+            componentChartContainer.innerHTML = '';
+            let maxComponentValue = Math.max(...componentChart.values, 1);
+
+            if (componentChart.labels.length > 0) {
+                componentChart.labels.forEach((label, index) => {
+                    const value = componentChart.values[index];
+                    const widthPercentage = Math.round((value / maxComponentValue) * 100);
+
+                    const row = document.createElement('div');
+                    row.className = 'flex items-center gap-2 w-full mb-2';
+
+                    const p = document.createElement('p');
+                    p.className = "text-[#adadad] text-[13px] font-bold leading-normal tracking-[0.015em] w-32 truncate";
+                    p.textContent = label;
+
+                    const divContainer = document.createElement('div');
+                    divContainer.className = "flex-1 flex items-center";
+
+                    const divBar = document.createElement('div');
+                    divBar.className = "chart-bar-horizontal bg-gradient-to-r from-[#3100B5] to-[#4338CA] border-r-2 h-6 rounded-r relative";
+                    divBar.style.width = `${Math.max(widthPercentage, 2)}%`;
+                    divBar.setAttribute('data-value', value);
+                    divBar.title = `${label}: ${value}`;
+
+                    const countSpan = document.createElement('span');
+                    countSpan.className = "ml-2 text-white text-xs font-bold";
+                    countSpan.textContent = value;
+
+                    divContainer.appendChild(divBar);
+                    divContainer.appendChild(countSpan);
+
+                    row.appendChild(p);
+                    row.appendChild(divContainer);
+
+                    componentChartContainer.appendChild(row);
+                });
+            } else {
+                componentChartContainer.innerHTML = '<p class="text-[#adadad] text-sm col-span-2 text-center">No components found in selection.</p>';
+            }
+            
+            // Prevent further processing
+            event.stopImmediatePropagation();
+            return;
+          } else if (type === 'NO_FRAME_SELECTED') {
+            console.log('No frame selected message received');
+            setLiveLoading(false);
+            const indicator = document.getElementById('status-indicator');
+            if (indicator) indicator.style.background = '#6B7280';
+            document.getElementById('status-text').textContent = 'Select a frame to analyze';
+            document.getElementById('frame-info').textContent = '';
+            
+            // Prevent further processing
+            event.stopImmediatePropagation();
+            return;
+          }
+        }
+      }, true); // Use capture phase to process before Figma's script
+
+      // Button event handlers
+      document.getElementById('saveTokensCsv').onclick = () => {
+        console.log('Sending GENERATE_CSV_REPORT to plugin code.');
+        parent.postMessage({ pluginMessage: { type: 'GENERATE_CSV_REPORT' } }, '*');
+      };
+
+      document.getElementById('close-csv-modal').onclick = () => {
+        document.getElementById('csv-modal').classList.add('hidden');
+      };
+
+      document.getElementById('download-csv-button').onclick = () => {
+        const csvContent = document.getElementById('csv-data-textarea').value;
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "design-tokens.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
+      // Loading state management
+      const setLiveLoading = (isLoading) => {
+        const liveBadgeDs = document.getElementById('live-badge-ds');
+        const spinnerDs = document.getElementById('spinner-ds');
+        const liveBadgeTokens = document.getElementById('live-badge-tokens');
+        const spinnerTokens = document.getElementById('spinner-tokens');
+        const liveBadgeComponents = document.getElementById('live-badge-components');
+        const spinnerComponents = document.getElementById('spinner-components');
+
+        if (isLoading) {
+          liveBadgeDs.style.display = 'none';
+          spinnerDs.style.display = 'inline-block';
+          liveBadgeTokens.style.display = 'none';
+          spinnerTokens.style.display = 'inline-block';
+          liveBadgeComponents.style.display = 'none';
+          spinnerComponents.style.display = 'inline-block';
+        } else {
+          liveBadgeDs.style.display = 'inline-flex';
+          spinnerDs.style.display = 'none';
+          liveBadgeTokens.style.display = 'inline-flex';
+          spinnerTokens.style.display = 'none';
+          liveBadgeComponents.style.display = 'inline-flex';
+          spinnerComponents.style.display = 'none';
+        }
+      };
+    </script>
+  </div>
+</body>
+</html> 

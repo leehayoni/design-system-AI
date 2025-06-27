@@ -1,0 +1,17 @@
+{
+  "name": "Design System AI",
+  "id": "1518864076543910996",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma", "figjam"],
+  "networkAccess": {
+    "allowedDomains": [
+      "https://private-user-images.githubusercontent.com",
+      "https://cdn.tailwindcss.com",
+      "https://fonts.googleapis.com"
+    ]
+  },
+  "documentAccess": "dynamic-page",
+  "enablePrivatePluginApi": true
+}

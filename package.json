@@ -1,0 +1,18 @@
+{
+  "name": "design-system-ai",
+  "version": "1.0.0",
+  "description": "Design System AI - Figma Plugin for analyzing design tokens and components",
+  "main": "code.js",
+  "scripts": {
+    "build": "tsc code.ts --outDir . --target es2018 --lib es2018,dom --module esnext --moduleResolution node --skipLibCheck",
+    "watch": "tsc code.ts --outDir . --target es2018 --lib es2018,dom --module esnext --moduleResolution node --skipLibCheck --watch",
+    "dev": "npm run build && echo 'Build complete. Reload plugin in Figma.'"
+  },
+  "keywords": ["figma", "plugin", "design-system", "ai", "tokens"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.82.0",
+    "typescript": "^5.0.0"
+  }
+}
